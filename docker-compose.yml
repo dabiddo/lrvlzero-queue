@@ -1,0 +1,51 @@
+services:
+  php:
+    build:
+      context: ./
+      dockerfile: webapp/Dockerfile
+    image: laravelworkers-app #name of the image
+    environment:
+      - SERVER_NAME=:80
+    # uncomment the following line if you want to run this in a production environment
+    # restart: always
+    ports:
+      - "80:80" # HTTP
+      - "443:443" # HTTPS
+      - "443:443/udp" # HTTP/3
+    volumes:
+      - ./webapp:/app
+      - caddy_data:/data
+      - caddy_config:/config
+  worker:
+    build:
+      context: ./
+      dockerfile: worker/Dockerfile
+    image: laravelworkers-worker #name of the image
+    command: tail -f /dev/null
+    # uncomment the following line if you want to run this in a production environment
+    # restart: always
+    volumes:
+      - ./worker:/app
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=laravelworkers
+      - MYSQL_USER=mysqluser
+      - MYSQL_PASSWORD=mysqlpassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+# Volumes needed for Caddy certificates and configuration
+volumes:
+  caddy_data:
+  caddy_config:
+  mysql_data:
