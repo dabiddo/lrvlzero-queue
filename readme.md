@@ -25,7 +25,7 @@ This project demonstrates how [Laravel Zero](https://laravel-zero.com/) can be u
 
 ## Run
 
-I followed this guide for the folder structure and to share the same DB between projects. Once you have the Docker images built, VSCode will run all services and you can connect to them.
+I followed [this](https://code.visualstudio.com/remote/advancedcontainers/connect-multiple-containers) guide for the folder structure and to share the same DB between projects. Once you have the Docker images built, VSCode will run all services and you can connect to them.
 
 ## Commands
 
